@@ -107,7 +107,7 @@ class Level(object):
                 for blockType in line:
                 #blockType = line.split()
                     if blockType == '1':
-                        #.setImage("ground.png")
+                        #.setImage("img/ground.png")
                         platformBlock = [x, y, THIRTY_TWO, \
                                          THIRTY_TWO, black, 1]
                         blockList.append(platformBlock)
@@ -146,7 +146,7 @@ class FirstLevel(Level):
     # Constructor
     def __init__(self, playerObject):
         super(FirstLevel,self).__init__(playerObject)
-        level = Level(playerObject).createLevel("level1.txt")
+        level = Level(playerObject).createLevel("levels/level1.txt")
 
         """
         level = [ #x,y,width,height, color
@@ -158,13 +158,13 @@ class FirstLevel(Level):
         for block in level:
             imageName = ""
             if block[FIVE] == 1:
-                imageName = "ground.png"
+                imageName = "img/ground.png"
             elif block[FIVE] == TWO:
-                imageName = "brick.png"
+                imageName = "img/brick.png"
             elif block[FIVE] == THREE:
-                imageName = "deathCube.png"
+                imageName = "img/deathCube.png"
             elif block[FIVE] == FOUR:
-                imageName = "portal.png"
+                imageName = "img/portal.png"
 
             block = Block( block[0], block [1], \
                            block [TWO],block[THREE], \
@@ -196,7 +196,7 @@ fps = SEVENTY_FIVE
 activeObjectList = pygame.sprite.Group()
 player = Player()
 player.setPosition(HUNDRED,HUNDRED_FORTY)
-player.setImage('bighero6.png')
+player.setImage('img/bighero6.png')
 activeObjectList.add(player)
 button = Screen() #makes quit button
 button.setPosition(SIX_HUNDRED,0)
@@ -208,7 +208,7 @@ levelList = []
 
 levelList.append(FirstLevel(player))
 #Level(player)
-currentLevel = Level.createLevel("level1.txt")
+currentLevel = Level.createLevel("levels/level1.txt")
 currentLevelNum = 0
 currentLevel = levelList[currentLevelNum]
 player.level = currentLevel
