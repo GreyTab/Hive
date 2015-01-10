@@ -3,8 +3,9 @@ The Player class creates the player controlled block
 """
 import pygame
 
-GRAVITY = 3
+GRAVITY = .75
 PLAYER_SPEED = 4
+MAX_FALL_SPEED = 12
 DEFAULT_WIDTH_32 = 32
 DEFAULT_HEIGHT_32 = 32
 DEFAULT_COLOR_PINK = (255, 200, 210)
@@ -55,8 +56,8 @@ class Player( pygame.sprite.Sprite ) :
 		self.rect.y += self.v_vel
 
 		# experience gravity
-		# if self.in_air :
-		# 	self.v_vel += GRAVITY
+		if self.in_air and self.v_vel <= MAX_FALL_SPEED:
+			self.v_vel += GRAVITY
 
 	# set controls for the player class, given an event
 	def player_controls( self, event ) :
@@ -66,8 +67,9 @@ class Player( pygame.sprite.Sprite ) :
 					self.h_vel = -PLAYER_SPEED
 				if event.key == pygame.K_RIGHT:
 					self.h_vel = PLAYER_SPEED
-				if event.key == pygame.K_UP:
-					self.v_vel = -PLAYER_SPEED
+				if event.key == pygame.K_UP and not self.in_air:
+					self.v_vel = -PLAYER_SPEED * 3
+					self.in_air = True
 				if event.key == pygame.K_DOWN:
 					self.v_vel = PLAYER_SPEED
 
@@ -76,7 +78,3 @@ class Player( pygame.sprite.Sprite ) :
 					self.h_vel = 0
 				if event.key == pygame.K_RIGHT:
 					self.h_vel = 0
-				if event.key == pygame.K_UP:
-					self.v_vel = 0
-				if event.key == pygame.K_DOWN:
-					self.v_vel = 0

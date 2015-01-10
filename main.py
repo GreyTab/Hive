@@ -30,13 +30,14 @@ def main() :
 			# --------------------------------
 			# Event handling
 			for event in pygame.event.get() :
-				player_logic.player_controls( event )
 				if event.type == pygame.QUIT :
 					running = False
+				player_logic.player_controls( event )
 
 			# --------------------------------
 			# Update positions and states
 			clock.tick( FRAMERATE_CAP )
+			handle_player_collision( player_logic, block_list )
 
 			player_logic.update()
 			player_sprite.draw( window )
@@ -56,7 +57,7 @@ def main() :
 
 def init_player_and_blocks() :
 	# player
-	player_logic = Player(100,100)
+	player_logic = Player(100,200)
 	player_sprite = pygame.sprite.Group()
 	player_sprite.add( player_logic )
 
@@ -67,5 +68,24 @@ def init_player_and_blocks() :
 
 	return player_logic, player_sprite, block_list
 
+
+def handle_player_collision( player_logic, object_list ) :
+
+	for collidable in pygame.sprite.spritecollide( player_logic, object_list, False ) :
+		if collidable.block_type == 1 :
+
+			# collision at the top side of block
+			if 	player_logic.rect.left < collidable.rect.right and \
+					player_logic.rect.right > collidable.rect.left and \
+					player_logic.rect.bottom >= collidable.rect.top :
+						player_logic.rect.bottom = collidable.rect.top
+						player_logic.v_vel = 0
+						player_logic.in_air = False
+
+			# collision at the right side of block
+			if 	player_logic.rect.right < collidable.rect.left and \
+					player_logic.rect.bottom > collidable.rect.top and \
+					player_logic.rect.top < collidable.rect.bottom :
+						player_logic.h_vel = 0
 
 main()
