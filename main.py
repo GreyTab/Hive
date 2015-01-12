@@ -2,7 +2,6 @@
 	This file is responsible for combining game logic and
 	loading content onto display
 """
-import copy
 import pygame
 from block import Block
 from player import Player
@@ -120,9 +119,9 @@ def handle_player_collision( player_logic, object_list ) :
 				player_logic.h_vel = 0
 
 	# check that, in the next update, the player will still be on the ground
-	if player_logic.v_vel == 0 and player_logic.on_ground :
-		next_pos = copy.deepcopy( player_logic )
-		next_pos.rect.bottom += 1
+	if player_logic.on_ground :
+		next_pos = Block( player_logic.rect.x, player_logic.rect.y, player_logic.rect.width, player_logic.rect.height )
+		next_pos.rect.bottom += player_logic.v_vel + 1
 		player_logic.on_ground = len( pygame.sprite.spritecollide( next_pos, object_list, False ) ) != 0
 
 
